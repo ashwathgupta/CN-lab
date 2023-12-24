@@ -1,0 +1,113 @@
+import java.util.Scanner;
+
+public class lab3_1 {
+    public static void main(String args[]) {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter the no of bits : ");
+        int n = s.nextInt();
+
+        int data[] = new int[n];
+
+        System.out.println("Enter the data bits : ");
+        for (int i = 0; i < n; i++)
+            data[i] = s.nextInt();
+
+        System.out.println("Enter the no of divisor bits : ");
+        int m = s.nextInt();
+        int divisor[] = new int[m];
+
+        System.out.println("Enter divisor bits : ");
+        for (int j = 0; j < m; j++)
+            divisor[j] = s.nextInt();
+
+        int len = n + m - 1;
+        int div[] = new int[len];
+        int rem[] = new int[len];
+        int crc[] = new int[len];
+
+        for (int i = 0; i < data.length; i++)
+            div[i] = data[i];
+
+        System.out.println("Dividend after appending zero");
+        for (int i = 0; i < div.length; i++)
+            System.out.print(div[i]);
+        System.out.println();
+
+        for (int j = 0; j < div.length; j++)
+            rem[j] = div[j];
+
+        rem = divide(div, divisor, rem);
+
+        for (int i = 0; i < div.length; i++)
+            crc[i] = (div[i] ^ rem[i]);
+
+        System.out.println();
+        System.out.println("CRC code");
+
+        for (int i = 0; i < crc.length; i++)
+            System.out.print(crc[i]);
+        System.out.println();
+
+        System.out.println("CRC code of " + len + " bits");
+        System.out.println("Enter CRC code");
+        for (int i = 0; i < crc.length; i++)
+            crc[i] = s.nextInt();
+
+        for (int i = 0; i < len; i++)
+            rem[i] = crc[i];
+
+        rem = divide(crc, divisor, rem);
+
+        boolean isError = false;
+        for (int i = 0; i < rem.length; i++) {
+            if (rem[i] != 0) {
+                isError = true;
+                break;
+            }
+        }
+
+        if (isError) {
+            System.out.println("Error detected!");
+        } else {
+            System.out.println("No error detected.");
+        }
+
+        s.close();
+    }
+
+    static int[] divide(int div[], int divisor[], int rem[]) {
+        int cur = 0;
+        while (true) {
+            for (int i = 0; i < divisor.length; i++)
+                rem[cur + i] = (rem[cur + i] ^ divisor[i]);
+
+            while (rem[cur] == 0 && cur != rem.length - 1)
+                cur++;
+
+            if ((rem.length - cur) < divisor.length)
+                break;
+        }
+        return rem;
+    }
+}
+/*Enter the no of bits : 
+16
+Enter the data bits : 
+1 0 1 1 0 0 1 0 0 0 1 1 0 0 1 0
+Enter the no of divisor bits : 
+4
+Enter divisor bits : 
+1 0 0 1
+Dividend after appending zero
+1011001000110010
+
+CRC code
+1100
+
+CRC code of 19 bits
+Enter CRC code
+1011001000110010
+
+No error detected.
+
+*/
