@@ -13,7 +13,7 @@ class Packet {
     }
 }
 
-public class lab2_4 {
+public class frameSort2 {
     private static final int FRAME_SIZE = 3;
 
     public static Packet[] divideMessageIntoPackets(String message) {
