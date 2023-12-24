@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class lab3_1 {
+public class CRC3 {
     public static void main(String args[]) {
         Scanner s = new Scanner(System.in);
         System.out.println("Enter the no of bits : ");
